@@ -6,7 +6,7 @@ Open-source developer tools from [Senova Systems](https://senovasys.com), built 
 
 | Tool | What it does | For | Status |
 | --- | --- | --- | --- |
-| [Seedrun](packages/seedrun) | Run reproducible experiments: fixed seeds, parallel parts, one merged results file | Researchers, ML and simulation work | In progress |
+| [Seedrun](packages/seedrun) | Run reproducible experiments: fixed seeds, parallel parts, one merged results file | Researchers, ML and simulation work | Ready |
 | [Smoothchart](packages/smoothchart) | Tiny SVG charts: monotone smooth lines, hover per line, animation, no dependencies | Web developers, research sites | In progress |
 | [Typeset](packages/typeset) | Equation cards rendered at build time: the equation, its symbols, the meaning; never a scrollbar | Technical writers, docs sites | In progress |
 | [Honest](packages/honest) | Research pages where the results file writes the charts and the wording, with hype and claim checks | Labs and companies publishing results | In progress |
