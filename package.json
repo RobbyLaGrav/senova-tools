@@ -1,0 +1,20 @@
+{
+  "name": "senova-tools",
+  "private": true,
+  "description": "Open-source developer tools from Senova Systems (AGPL-3.0-or-later).",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "test": "node --test \"packages/*/test/**/*.test.ts\"",
+    "typecheck": "tsc -b",
+    "check": "npm run typecheck && node scripts/check-headers.mjs && node scripts/check-packages.mjs",
+    "build": "tsc -b",
+    "new-tool": "node scripts/new-tool.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0"
+  }
+}
