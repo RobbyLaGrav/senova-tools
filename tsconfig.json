@@ -8,6 +8,9 @@
       "path": "packages/seedrun"
     },
     {
+      "path": "packages/smoothchart"
+    },
+    {
       "path": "packages/typeset"
     }
   ]
