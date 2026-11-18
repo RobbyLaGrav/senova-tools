@@ -1,0 +1,123 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
+<!-- Copyright (c) 2026 Senova Systems LLC and contributors -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Spikesim example</title>
+    <style>
+      /* Theming: the renderer reads these custom properties (see the README). */
+      :root {
+        color-scheme: light dark;
+        --spikesim-bg: #ffffff;
+        --spikesim-fg: #0b0b0c;
+        --spikesim-muted: #5c5d65;
+        --spikesim-surface: #ebebed;
+        --spikesim-line: #e4e4e7;
+        --spikesim-on: #2747d6;
+        --spikesim-off: #0b0b0c;
+        --spikesim-accent: #2747d6;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --spikesim-bg: #141416;
+          --spikesim-fg: #f4f4f5;
+          --spikesim-muted: #a1a1aa;
+          --spikesim-surface: #2a2a2e;
+          --spikesim-line: #2a2a2e;
+          --spikesim-on: #7c93ff;
+          --spikesim-off: #f4f4f5;
+          --spikesim-accent: #7c93ff;
+        }
+      }
+      body { margin: 0; padding: 24px 16px; background: var(--spikesim-bg); color: var(--spikesim-fg); font: 15px/1.5 system-ui, sans-serif; }
+      main { max-width: 960px; margin: 0 auto; display: grid; gap: 16px; }
+      h1 { font-size: 1.4rem; margin: 0; }
+      p { margin: 0; color: var(--spikesim-muted); }
+      .controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+      label { display: inline-flex; gap: 6px; align-items: center; }
+      select, button { font: inherit; color: inherit; background: var(--spikesim-bg); border: 1px solid var(--spikesim-line); border-radius: 8px; padding: 4px 10px; }
+      .panels { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+      figure { margin: 0; display: grid; gap: 8px; border: 1px solid var(--spikesim-line); border-radius: 8px; padding: 12px; }
+      figcaption { font-size: 0.9rem; }
+      canvas { display: block; width: 100%; }
+      #sensor { aspect-ratio: 3 / 2; }
+      #raster { height: 180px; cursor: pointer; }
+      #membrane { height: 72px; }
+      dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 0; }
+      dl div { display: grid; }
+      dt { font-size: 0.8rem; color: var(--spikesim-muted); order: 2; }
+      dd { margin: 0; font-size: 1.4rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+    </style>
+  </head>
+  <body>
+    <main id="app">
+      <h1>Spikesim: event camera to spiking neurons</h1>
+      <p>The framework-free API: <code>createSim</code>, <code>createRenderer</code> and <code>startLoop</code>. Simulated time runs at a quarter of real time.</p>
+      <div class="controls">
+        <label>Spot <select id="speed"><option value="0">Still</option><option value="0.35" selected>Slow</option><option value="1.1">Fast</option></select></label>
+        <label>Noise <select id="noise"><option value="0">None</option><option value="1.5" selected>Sensor noise</option><option value="6">Heavy noise</option></select></label>
+        <button id="play" type="button" aria-pressed="true">Pause</button>
+      </div>
+      <div class="panels">
+        <figure>
+          <figcaption><b>Event camera.</b> ON and OFF events; ring: the spot; line: the decoded position.</figcaption>
+          <canvas id="sensor" role="img" aria-label="Event camera pixels and decoded position"></canvas>
+        </figure>
+        <figure>
+          <figcaption><b>Spiking neurons.</b> Click a row to watch that neuron. <span id="neuron"></span></figcaption>
+          <canvas id="raster" role="img" aria-label="Spike raster"></canvas>
+          <canvas id="membrane" role="img" aria-label="Membrane potential of the selected neuron"></canvas>
+        </figure>
+      </div>
+      <dl>
+        <div><dt>events per second</dt><dd id="events">–</dd></div>
+        <div><dt>event-driven synaptic ops per second</dt><dd id="eventOps">–</dd></div>
+        <div><dt>clocked multiply-accumulates per second</dt><dd id="clockOps">–</dd></div>
+        <div><dt>less work, event-driven</dt><dd id="ratio">–</dd></div>
+        <div><dt>decoding error, rms</dt><dd id="error">–</dd></div>
+      </dl>
+    </main>
+    <script type="module">
+      import { createRenderer, createSim, createSpotScene, formatRate, formatRatio, neuronAtY, readTheme, startLoop } from "../src/index.ts"
+
+      const $ = (id) => document.getElementById(id)
+      const scene = createSpotScene({ speedHz: Number($("speed").value) })
+      const sim = createSim({ seed: 1, scene, sensor: { noiseHz: Number($("noise").value) } })
+      const renderer = createRenderer({ sensor: $("sensor"), raster: $("raster"), membrane: $("membrane") }, { selected: 16, theme: readTheme($("app")) })
+      matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => (renderer.theme = readTheme($("app"))))
+
+      let lastCount = 0
+      const loop = startLoop({
+        sim,
+        element: $("app"),
+        draw(sim) {
+          renderer.draw(sim)
+          const now = performance.now()
+          if (now - lastCount < 250) return
+          lastCount = now
+          const r = sim.rates()
+          $("events").textContent = formatRate(r.eventsPerS)
+          $("eventOps").textContent = formatRate(r.eventDrivenOpsPerS)
+          $("clockOps").textContent = formatRate(r.clockedOpsPerS)
+          $("ratio").textContent = formatRatio(r.savingRatio)
+          $("error").textContent = r.rmsErrorPx === null ? "–" : `${r.rmsErrorPx.toFixed(1)} px`
+          $("neuron").textContent = `Showing neuron ${renderer.selected + 1}.`
+        },
+      })
+
+      $("speed").addEventListener("change", (e) => (scene.speedHz = Number(e.target.value)))
+      $("noise").addEventListener("change", (e) => sim.setNoiseHz(Number(e.target.value)))
+      $("play").addEventListener("click", (e) => {
+        loop.playing ? loop.pause() : loop.play()
+        e.target.textContent = loop.playing ? "Pause" : "Play"
+        e.target.setAttribute("aria-pressed", String(loop.playing))
+      })
+      $("raster").addEventListener("pointerdown", (e) => {
+        const r = e.currentTarget.getBoundingClientRect()
+        renderer.selected = neuronAtY(e.clientY - r.top, r.height, sim.state.neurons.count)
+      })
+    </script>
+  </body>
+</html>
