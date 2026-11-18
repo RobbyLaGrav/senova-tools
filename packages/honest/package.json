@@ -1,0 +1,14 @@
+{
+  "name": "@senova/honest",
+  "version": "0.0.0",
+  "description": "Publish research results that can't drift from the data: typed results, computed wording, rule-picked headlines and a claim checker for CI.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "private": true,
+  "keywords": ["research", "results", "reproducibility", "claims", "lint", "writing", "ci"],
+  "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
+  "bin": { "honest": "./dist/bin.js" },
+  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "repository": { "type": "git", "url": "https://github.com/RobbyLaGrav/senova-tools.git", "directory": "packages/honest" },
+  "engines": { "node": ">=24" }
+}
