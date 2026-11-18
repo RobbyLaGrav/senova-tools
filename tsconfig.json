@@ -8,6 +8,9 @@
       "path": "packages/honest"
     },
     {
+      "path": "packages/probe"
+    },
+    {
       "path": "packages/seedrun"
     },
     {
