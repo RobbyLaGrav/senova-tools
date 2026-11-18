@@ -3,6 +3,9 @@
   "references": [
     {
       "path": "packages/_template"
+    },
+    {
+      "path": "packages/seedrun"
     }
   ]
 }

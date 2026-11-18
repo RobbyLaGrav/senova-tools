@@ -1,0 +1,17 @@
+{
+  "name": "@senova/seedrun",
+  "version": "0.0.0",
+  "description": "Run reproducible experiments with fixed seeds, split into parts that run side by side, and merge them into one results file.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+    "./ml": { "types": "./dist/ml.d.ts", "default": "./dist/ml.js" }
+  },
+  "bin": { "seedrun": "./dist/bin.js" },
+  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "keywords": ["reproducible", "experiments", "seed", "prng", "simulation", "research"],
+  "repository": { "type": "git", "url": "https://github.com/RobbyLaGrav/senova-tools.git", "directory": "packages/seedrun" },
+  "engines": { "node": ">=24" }
+}
