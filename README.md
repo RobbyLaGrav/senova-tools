@@ -7,10 +7,10 @@ Open-source developer tools from [Senova Systems](https://senovasys.com), built 
 | Tool | What it does | For | Status |
 | --- | --- | --- | --- |
 | [Seedrun](packages/seedrun) | Run reproducible experiments: fixed seeds, parallel parts, one merged results file | Researchers, ML and simulation work | Ready |
-| [Smoothchart](packages/smoothchart) | Tiny SVG charts: monotone smooth lines, hover per line, animation, no dependencies | Web developers, research sites | In progress |
-| [Typeset](packages/typeset) | Equation cards rendered at build time: the equation, its symbols, the meaning; never a scrollbar | Technical writers, docs sites | In progress |
-| [Honest](packages/honest) | Research pages where the results file writes the charts and the wording, with hype and claim checks | Labs and companies publishing results | In progress |
-| [Spikesim](packages/spikesim) | Browser simulation of an event camera feeding leaky integrate-and-fire neurons | Neuromorphic teaching and demos | In progress |
+| [Smoothchart](packages/smoothchart) | Tiny SVG charts: monotone smooth lines, hover per line, animation, no dependencies | Web developers, research sites | Ready |
+| [Typeset](packages/typeset) | Equation cards rendered at build time: the equation, its symbols, the meaning; never a scrollbar | Technical writers, docs sites | Ready |
+| [Honest](packages/honest) | Research pages where the results file writes the charts and the wording, with hype and claim checks | Labs and companies publishing results | Ready |
+| [Spikesim](packages/spikesim) | Browser simulation of an event camera feeding leaky integrate-and-fire neurons | Neuromorphic teaching and demos | Ready |
 | [Quant8](packages/quant8) | Quantise a small network to 8-bit and generate C to run it on a microcontroller | Embedded ML | In progress |
 | [Overflow](packages/overflow) | Audit pages for inner scrollbars, misaligned list columns and titles that wrap | Front-end teams | In progress |
 | [Renderpack](packages/renderpack) | CAD renders to web images, with a contact sheet to check before publishing | Hardware companies | In progress |
