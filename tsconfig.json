@@ -11,6 +11,9 @@
       "path": "packages/smoothchart"
     },
     {
+      "path": "packages/spikesim"
+    },
+    {
       "path": "packages/typeset"
     }
   ]
