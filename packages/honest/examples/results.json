@@ -1,0 +1,10 @@
+{
+  "note": "Simulated results. Nothing here was measured on hardware.",
+  "baseline": { "name": "the dense network", "rms_mm": 0.30, "ops": 4608 },
+  "settings": [
+    { "name": "exact", "rms_mm": 0.30, "ops": 4100 },
+    { "name": "low threshold", "rms_mm": 0.32, "ops": 1500 },
+    { "name": "mid threshold", "rms_mm": 0.33, "ops": 900 },
+    { "name": "high threshold", "rms_mm": 0.45, "ops": 400 }
+  ]
+}

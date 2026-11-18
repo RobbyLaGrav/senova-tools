@@ -1,0 +1,9 @@
+{
+  "rules": {
+    "simulation-note": "error",
+    "price": "warn",
+    "vendor-figure": ["error", { "vendors": ["Acme"] }]
+  },
+  "custom": [{ "id": "no-guarantee", "pattern": "guarantee[sd]?", "message": "Don't promise results." }],
+  "ignore": ["drafts/**"]
+}
