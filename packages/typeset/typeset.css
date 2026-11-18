@@ -1,0 +1,105 @@
+/* SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (c) 2026 Senova Systems LLC and contributors
+ *
+ * Typeset equation cards. Load after KaTeX's own stylesheet (katex/dist/katex.min.css, which brings the fonts).
+ *
+ * Theme it with these custom properties, set on :root or on any ancestor of the cards. Every one has a default
+ * that follows the surrounding text colour, so the cards work in light and dark themes without setting anything.
+ *
+ *   --typeset-ink            equation, symbols and plain-words text     default: currentColor
+ *   --typeset-muted          headings and symbol meanings                default: currentColor at 68%
+ *   --typeset-line           card borders and symbol dividers            default: currentColor at 14%
+ *   --typeset-surface        background behind the equation              default: currentColor at 5%
+ *   --typeset-radius         corner radius of the three parts            default: 16px
+ *   --typeset-gap            space between the parts                     default: 14px
+ *   --typeset-eq-size        equation size before any fitting            default: clamp(1.05em, 1.6vw, 1.32em)
+ *   --typeset-symbol-size    size of each typeset symbol                 default: 17px
+ *   --typeset-text-size      size of the plain-words text                default: 15.5px
+ *   --typeset-meaning-size   size of each symbol's meaning               default: 14px
+ *   --typeset-label-size     size of the "Symbols" / "In plain words"    default: 12px
+ *
+ * Layout: the equation spans the full width; "Symbols" and "In plain words" sit side by side below it (7:5) and
+ * stack when the card is under 640px wide. Symbols go to one column under 420px. Container queries, so a card in a
+ * narrow column stacks even on a wide screen. Nothing in a card ever scrolls: <FitMath> shrinks long equations.
+ */
+
+.typeset {
+  container: typeset / inline-size;
+  margin: 6px 0;
+  display: grid;
+  gap: var(--typeset-gap, 14px);
+  color: var(--typeset-ink, currentColor);
+}
+
+.typeset-eq {
+  padding: clamp(20px, 3vw, 34px) clamp(16px, 3vw, 36px);
+  background: var(--typeset-surface, color-mix(in srgb, currentColor 5%, transparent));
+  border-radius: var(--typeset-radius, 16px);
+  overflow: hidden;
+  display: grid;
+  justify-items: center;
+  min-width: 0;
+}
+.typeset-eq-inner { max-width: 100%; }
+.typeset-eq .katex-display { margin: 0; }
+.typeset-eq .katex { font-size: var(--typeset-eq-size, clamp(1.05em, 1.6vw, 1.32em)); }
+
+.typeset-parts {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: var(--typeset-gap, 14px);
+  align-items: start;
+}
+.typeset-parts > :only-child { grid-column: 1 / -1; }
+
+.typeset-card {
+  border: 1px solid var(--typeset-line, color-mix(in srgb, currentColor 14%, transparent));
+  border-radius: var(--typeset-radius, 16px);
+  padding: 18px 20px;
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  min-width: 0;
+}
+
+.typeset-label {
+  margin: 0;
+  font-size: var(--typeset-label-size, 12px);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--typeset-muted, color-mix(in srgb, currentColor 68%, transparent));
+}
+
+.typeset-symbols {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 22px;
+}
+.typeset-symbol {
+  display: grid;
+  gap: 3px;
+  align-content: start;
+  padding-top: 10px;
+  border-top: 1px solid var(--typeset-line, color-mix(in srgb, currentColor 14%, transparent));
+}
+.typeset-symbol dt { font-size: var(--typeset-symbol-size, 17px); line-height: 1.3; }
+.typeset-symbol dt .katex { font-size: 1.05em; }
+.typeset-symbol dd {
+  margin: 0;
+  font-size: var(--typeset-meaning-size, 14px);
+  line-height: 1.5;
+  color: var(--typeset-muted, color-mix(in srgb, currentColor 68%, transparent));
+}
+
+.typeset-explain { margin: 0; font-size: var(--typeset-text-size, 15.5px); line-height: 1.7; }
+
+.typeset-inline .katex { font-size: 1.02em; }
+
+@container typeset (max-width: 640px) {
+  .typeset-parts { grid-template-columns: minmax(0, 1fr); }
+}
+@container typeset (max-width: 420px) {
+  .typeset-symbols { grid-template-columns: minmax(0, 1fr); }
+}

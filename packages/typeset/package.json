@@ -1,0 +1,32 @@
+{
+  "name": "@senova/typeset",
+  "version": "0.0.0",
+  "description": "Equation cards rendered at build time: the equation, its symbols and their meaning, and the idea in plain words. Never a scrollbar.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "private": true,
+  "sideEffects": ["*.css"],
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+    "./react": { "types": "./dist/react.d.ts", "default": "./dist/react.js" },
+    "./typeset.css": "./typeset.css"
+  },
+  "files": ["dist", "typeset.css", "README.md", "CHANGELOG.md"],
+  "repository": { "type": "git", "url": "https://github.com/RobbyLaGrav/senova-tools.git", "directory": "packages/typeset" },
+  "engines": { "node": ">=24" },
+  "dependencies": {
+    "katex": "^0.19.1"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react": { "optional": true }
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
