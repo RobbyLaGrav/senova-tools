@@ -1,0 +1,40 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
+<!-- Copyright (c) 2026 Senova Systems LLC and contributors -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smoothchart example</title>
+    <link rel="stylesheet" href="../styles.css" />
+    <style>
+      :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
+      body { margin: 0; background: light-dark(#fafafa, #111214); color: light-dark(#1f2328, #e6e7ea); }
+      main { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+      h1 { font-size: 24px; margin: 0 0 4px; }
+      h2 { font-size: 17px; margin: 40px 0 4px; }
+      p { margin: 0 0 12px; color: light-dark(#4b5563, #a1a7b0); line-height: 1.5; }
+      .controls { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
+      .controls button { font: inherit; font-size: 14px; padding: 6px 12px; border-radius: 8px; border: 0; cursor: pointer; background: light-dark(#e5e7eb, #2a2c31); color: inherit; }
+      .controls button:hover { background: light-dark(#d1d5db, #34373d); }
+    </style>
+    <!-- React for the example only, pinned, from esm.sh. The package itself has no runtime dependencies. -->
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://esm.sh/react@19.1.0",
+          "react/jsx-runtime": "https://esm.sh/react@19.1.0/jsx-runtime",
+          "react-dom/client": "https://esm.sh/react-dom@19.1.0/client?deps=react@19.1.0"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <main>
+      <h1>Smoothchart</h1>
+      <p>Tiny SVG charts. Point at a line to see its value; the other lines fade. Click a legend entry to hide or show a line.</p>
+      <div id="app"></div>
+    </main>
+    <script type="module" src="./demo.js"></script>
+  </body>
+</html>

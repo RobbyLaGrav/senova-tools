@@ -1,0 +1,103 @@
+/* SPDX-License-Identifier: AGPL-3.0-or-later */
+/* Copyright (c) 2026 Senova Systems LLC and contributors */
+
+/*
+ * Smoothchart styles. Theme with the --sc-* custom properties, set anywhere above the chart (:root, a wrapper, or
+ * the figure itself). Defaults follow the page's `color-scheme` through light-dark(): light unless the page says
+ * `color-scheme: dark` (or `light dark` on a dark system).
+ *
+ *   --sc-ink            text: labels, titles                  #1f2328 / #e6e7ea
+ *   --sc-muted          axis text, default line colour        #6b7280 / #9aa0aa
+ *   --sc-grid           grid lines, tooltip border            #e5e7eb / #2c2f35
+ *   --sc-accent         highlighted line or bar               #2563eb / #6ea8ff
+ *   --sc-bg             tooltip and hover-ring fill           #ffffff / #17181b
+ *   --sc-surface        bands, bar tracks, legend hover       #f3f4f6 / #222429
+ *   --sc-surface-strong default bars, areas                   #d1d5db / #3a3d44
+ *   --sc-dim-opacity    other lines while one is hovered      0.22
+ *   --sc-duration       data-change animation                 0.45s
+ *   --sc-ease           easing for bars and fades             cubic-bezier(0.16, 1, 0.3, 1)
+ *   --sc-font           font family                           inherit
+ *
+ * A series or bar with a `color` sets --sc-series-color on its own group; nothing else needs to.
+ */
+
+.sc-figure {
+  --_sc-ink: var(--sc-ink, light-dark(#1f2328, #e6e7ea));
+  --_sc-muted: var(--sc-muted, light-dark(#6b7280, #9aa0aa));
+  --_sc-grid: var(--sc-grid, light-dark(#e5e7eb, #2c2f35));
+  --_sc-accent: var(--sc-accent, light-dark(#2563eb, #6ea8ff));
+  --_sc-bg: var(--sc-bg, light-dark(#ffffff, #17181b));
+  --_sc-surface: var(--sc-surface, light-dark(#f3f4f6, #222429));
+  --_sc-surface-strong: var(--sc-surface-strong, light-dark(#d1d5db, #3a3d44));
+  --_sc-duration: var(--sc-duration, 0.45s);
+  --_sc-ease: var(--sc-ease, cubic-bezier(0.16, 1, 0.3, 1));
+  margin: 8px 0;
+  display: grid;
+  gap: 8px;
+  font-family: var(--sc-font, inherit);
+}
+.sc-figure figcaption { font-size: 14px; line-height: 1.5; color: var(--_sc-muted); display: grid; gap: 6px; }
+
+/* the SVG scales to the container's width; overflow stays visible so nothing ever needs a scrollbar */
+.sc-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.sc-interactive { touch-action: pan-y; }
+
+/* per-series colour: the series' own colour, else the accent when highlighted, else muted */
+.sc-series, .sc-key, .sc-hover, .sc-barrow { --_sc-c: var(--sc-series-color, var(--_sc-muted)); }
+.sc-barrow { --_sc-c: var(--sc-series-color, var(--_sc-surface-strong)); }
+.sc-hi { --_sc-c: var(--sc-series-color, var(--_sc-accent)); }
+
+.sc-axis, .sc-value { font-size: 11px; fill: var(--_sc-muted); }
+.sc-axis-title, .sc-label { font-size: 12px; fill: var(--_sc-ink); }
+.sc-grid { stroke: var(--_sc-grid); stroke-width: 1; }
+.sc-band { fill: var(--_sc-surface); }
+
+.sc-series { transition: opacity 0.2s ease; }
+.sc-line { fill: none; stroke: var(--_sc-c); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: stroke-width 0.15s ease; }
+.sc-hi .sc-line { stroke-width: 2.5; }
+.sc-on .sc-line { stroke-width: 3; }
+.sc-area { fill: var(--_sc-c); opacity: 0.12; }
+.sc-dot { fill: var(--_sc-c); }
+.sc-hit { fill: none; stroke: transparent; stroke-width: 16; pointer-events: stroke; cursor: pointer; }
+.sc-dim { opacity: var(--sc-dim-opacity, 0.22); }
+
+.sc-ring { fill: var(--_sc-bg); stroke: var(--_sc-c); stroke-width: 2.5; }
+.sc-tip { fill: var(--_sc-bg); stroke: var(--_sc-grid); }
+.sc-tip-title { font-size: 12px; font-weight: 600; fill: var(--_sc-ink); }
+.sc-tip-text { font-size: 11.5px; fill: var(--_sc-muted); }
+.sc-hover { animation: sc-pop 0.14s ease-out; transform-box: fill-box; }
+
+.sc-barrow { transition: opacity 0.2s ease; }
+.sc-track { fill: var(--_sc-surface); }
+.sc-bar { fill: var(--_sc-c); }
+.sc-bar, .sc-value { transition: transform var(--_sc-duration) var(--_sc-ease); }
+.sc-detail { color: var(--_sc-ink); }
+
+/* first paint: lines draw in, dashed lines and areas fade in, bars grow from zero */
+.sc-draw { stroke-dasharray: 1; animation: sc-draw 0.9s var(--_sc-ease) backwards; }
+.sc-fade-in, .sc-area { animation: sc-fade 0.6s ease-out backwards; }
+.sc-bar { animation: sc-grow calc(var(--_sc-duration) * 1.6) var(--_sc-ease) backwards; }
+.sc-value { animation: sc-slide calc(var(--_sc-duration) * 1.6) var(--_sc-ease) backwards; }
+
+/* legend: buttons that toggle series */
+.sc-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 13px; }
+.sc-key { color: var(--_sc-muted); }
+.sc-key::before { content: ""; display: inline-block; width: 14px; height: 3px; margin-right: 6px; vertical-align: middle; border-radius: 2px; background: var(--_sc-c); }
+.sc-key-dash::before { height: 0; background: none; border-top: 2px dashed var(--_sc-c); border-radius: 0; }
+.sc-key-band::before { height: 10px; background: var(--_sc-surface); border: 1px solid var(--_sc-grid); }
+.sc-legend button.sc-key { font: inherit; font-size: 13px; background: none; border: 0; padding: 2px 6px; margin-left: -6px; border-radius: 6px; cursor: pointer; transition: background-color 0.15s ease, opacity 0.15s ease; }
+.sc-legend button.sc-key:hover { background: var(--_sc-surface); color: var(--_sc-ink); }
+.sc-legend button.sc-key:focus-visible { outline: none; background: var(--_sc-surface); color: var(--_sc-ink); }
+.sc-legend button.sc-key[aria-pressed="false"] { opacity: 0.45; text-decoration: line-through; }
+
+@keyframes sc-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes sc-fade { from { opacity: 0; } }
+@keyframes sc-grow { from { transform: scaleX(0); } }
+@keyframes sc-slide { from { transform: translateX(8px); opacity: 0; } }
+@keyframes sc-pop { from { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .sc-series, .sc-barrow, .sc-line, .sc-bar, .sc-value, .sc-legend button.sc-key { transition: none; }
+  .sc-draw, .sc-fade-in, .sc-area, .sc-bar, .sc-value, .sc-hover { animation: none; }
+  .sc-draw { stroke-dasharray: none; }
+}
