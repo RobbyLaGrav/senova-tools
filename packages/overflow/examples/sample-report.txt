@@ -1,0 +1,33 @@
+http://127.0.0.1:3000/ at 375x812 (mobile): 2 errors, 4 warnings, 2 info in 20 elements
+
+ERROR   page-overflow-x  html
+        the page is 37 px wider than the viewport and scrolls sideways; 1 element sticks out
+        fix: Fix the elements named below; overflow-x: hidden on body hides the symptom and can break position: sticky.
+
+ERROR   page-overflow-x  html > body > table.usage
+        sticks out 37 px past the right edge of the viewport
+        fix: Common causes: a fixed width or min-width, 100vw (it includes the scrollbar), long unbroken text or URLs (overflow-wrap: anywhere), wide images or tables without max-width: 100%.
+
+WARNING title-wraps  html > body > h1.hero-title
+        title wraps to 3 lines (limit 2): "Audit every page before your users do"
+        fix: Shorten the title, give it more width, or lower the font size at this viewport (clamp() scales it with the viewport).
+
+WARNING inner-scrollbar  html > body > nav.sidebar
+        scrolls inside the page: content 640 px tall in a 200 px box
+        fix: Let the page scroll instead (drop the fixed height or max-height, or overflow: auto), or add the selector to allowScroll if this scroll box is intended.
+
+WARNING column-misaligned  html > body > ul.team > li:nth-of-type(2) > span.role
+        column 2 of 3 rows in html > body > ul.team: 1 row starts up to 14 px from the others
+        fix: Give the columns shared widths: a table, CSS grid with grid-template-columns (or subgrid), or fixed cell widths, instead of content-sized flex items.
+
+WARNING text-clipped  html > body > div.card > p.card-body
+        text is clipped: 48 px cut off at the bottom: "Three scroll boxes inside the settings page trap the mous..."
+        fix: Let the box grow with its text (drop the fixed height or width), or truncate on purpose with text-overflow: ellipsis or line-clamp.
+
+INFO    title-widow  html > body > h1.hero-title
+        title leaves one word, "do", alone on its last line: "Audit every page before your users do"
+        fix: text-wrap: balance evens out the lines of short titles (or join the last two words with a non-breaking space).
+
+INFO    text-clipped  html > body > div.card > h3.card-title
+        truncated: 109 px cut off on the right (with an ellipsis): "Weekly report: scroll containers and layout shifts"
+        fix: Truncation looks deliberate; make sure the full text is reachable (a title attribute, a tooltip or a detail view).

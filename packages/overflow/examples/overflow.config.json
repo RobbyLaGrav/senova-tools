@@ -1,0 +1,6 @@
+{
+  "allowScroll": ["pre", "textarea", "select"],
+  "maxTitleLines": 2,
+  "tolerance": { "column": 2 },
+  "failOn": "warning"
+}
