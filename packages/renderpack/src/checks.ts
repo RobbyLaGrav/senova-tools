@@ -92,6 +92,8 @@ function checkerTile(img: RgbaImage, ox: number, oy: number, P: number): number 
   }
   const n = P * P
   if (off > n * 0.03 || ones < n * 0.25 || ones > n * 0.75) return null
+  // Score every tile size and keep the best: a true grid of tile s scores 1 at s (and odd multiples), less elsewhere.
+  let best = 0, bestScore = 0
   for (let s = 2; s <= P / 2; s++) {
     let ok = 0, total = 0
     for (let y = 0; y + s < P; y++) {
@@ -101,13 +103,16 @@ function checkerTile(img: RgbaImage, ox: number, oy: number, P: number): number 
         if (c !== cls[y * P + x + s] && c !== cls[(y + s) * P + x] && c === cls[(y + s) * P + x + s]) ok++
       }
     }
-    if (total === 0 || ok / total < 0.6) continue
-    // Same class across most horizontal neighbours: tiles are solid, not a 1-pixel dither.
-    let same = 0, pairs = 0
-    for (let y = 0; y < P; y++) for (let x = 0; x + 1 < P; x++) { pairs++; if (cls[y * P + x] === cls[y * P + x + 1]) same++ }
-    if (same / pairs >= 1 - 1.5 / s) return s
+    if (total > 0 && ok / total > bestScore + 1e-9) {
+      bestScore = ok / total
+      best = s
+    }
   }
-  return null
+  if (bestScore < 0.8) return null
+  // Same class across most horizontal neighbours: tiles are solid, not a 1-pixel dither.
+  let same = 0, pairs = 0
+  for (let y = 0; y < P; y++) for (let x = 0; x + 1 < P; x++) { pairs++; if (cls[y * P + x] === cls[y * P + x + 1]) same++ }
+  return same / pairs >= 1 - 1.5 / best ? best : null
 }
 
 /** Rules for web file names: lower case letters, digits and single dashes, at most 60 characters, lower-case extension. */
