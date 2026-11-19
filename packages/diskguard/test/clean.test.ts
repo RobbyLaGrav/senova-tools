@@ -149,7 +149,8 @@ test("symlinks and junctions are never followed: not measured, not cleared throu
     assert.equal(size.bytes, 1000, "the linked folder's 9000 bytes are not counted")
     assert.equal(size.links, 1)
 
-    const r = await clean([root], { yes: true })
+    // minAge 0: the links were just created, and a link's own time counts as a change (tested separately).
+    const r = await clean([root], { yes: true, minAge: 0 })
     const by = (n: string) => r.actions.find((a) => a.name === n)
     assert.equal(by(".next")?.result, "deleted")
     assert.equal(by("dist")?.result, "skipped")
