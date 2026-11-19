@@ -1,0 +1,12 @@
+{
+  "name": "@senova/quant8",
+  "version": "0.0.0",
+  "description": "One sentence: what it does.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "private": true,
+  "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
+  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "repository": { "type": "git", "url": "https://github.com/RobbyLaGrav/senova-tools.git", "directory": "packages/quant8" },
+  "engines": { "node": ">=24" }
+}

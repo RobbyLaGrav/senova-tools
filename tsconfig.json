@@ -8,6 +8,9 @@
       "path": "packages/honest"
     },
     {
+      "path": "packages/quant8"
+    },
+    {
       "path": "packages/seedrun"
     },
     {
