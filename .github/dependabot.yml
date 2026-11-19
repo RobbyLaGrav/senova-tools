@@ -7,3 +7,8 @@ updates:
     directory: /
     schedule: { interval: weekly }
     open-pull-requests-limit: 5
+    ignore:
+      # The tools target Node 24 (engines >=24). Newer @types/node majors describe APIs Node 24 lacks,
+      # so keep the types on 24.x and take only its minor and patch updates.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
