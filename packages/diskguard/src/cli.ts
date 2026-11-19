@@ -185,7 +185,8 @@ export async function main(argv: readonly string[], io: CliIo = defaultIo, signa
 }
 
 function describeThresholds(t: Thresholds) {
-  return { warn: t.warn ? formatThreshold(t.warn) : null, critical: t.critical ? formatThreshold(t.critical) : null }
+  const f = (x: Thresholds["warn"]) => (x === undefined ? null : formatThreshold(parseThreshold(x)))
+  return { warn: f(t.warn), critical: f(t.critical) }
 }
 
 function statusLine(s: SpaceStatus, show: (p: string) => string): string {

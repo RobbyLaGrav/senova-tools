@@ -5,7 +5,7 @@
 import { statfs } from "node:fs/promises"
 import { resolve } from "node:path"
 
-import { DiskguardInputError, parseDuration, thresholdBytes, type Threshold } from "./units.ts"
+import { DiskguardInputError, parseDuration, parseThreshold, thresholdBytes, type Threshold } from "./units.ts"
 
 /** Free space on the volume that holds `path`. */
 export interface SpaceInfo {
@@ -21,9 +21,10 @@ export interface SpaceInfo {
 /** ok: above both thresholds. warn: at or below `warn`. critical: at or below `critical`. */
 export type SpaceLevel = "ok" | "warn" | "critical"
 
+/** Thresholds as objects or strings such as "20GB" or "10%". */
 export interface Thresholds {
-  warn?: Threshold
-  critical?: Threshold
+  warn?: Threshold | string
+  critical?: Threshold | string
 }
 
 export interface SpaceStatus extends SpaceInfo {
@@ -44,14 +45,15 @@ export async function getFreeSpace(path: string): Promise<SpaceInfo> {
 
 /** The level of one reading against the thresholds. */
 export function levelOf(info: SpaceInfo, t: Thresholds): SpaceLevel {
-  if (t.critical !== undefined && info.free <= thresholdBytes(t.critical, info.total)) return "critical"
-  if (t.warn !== undefined && info.free <= thresholdBytes(t.warn, info.total)) return "warn"
+  if (t.critical !== undefined && info.free <= thresholdBytes(parseThreshold(t.critical), info.total)) return "critical"
+  if (t.warn !== undefined && info.free <= thresholdBytes(parseThreshold(t.warn), info.total)) return "warn"
   return "ok"
 }
 
 /** Reads every path once and grades it against the thresholds. */
 export async function checkSpace(paths: readonly string[], t: Thresholds = {}, read: SpaceReader = getFreeSpace): Promise<SpaceStatus[]> {
   if (paths.length === 0) throw new DiskguardInputError("give at least one path to check")
+  validate(t)
   const out: SpaceStatus[] = []
   for (const p of paths) {
     const info = await read(p)
@@ -85,6 +87,7 @@ export interface WatchOptions extends Thresholds {
  */
 export async function watchFreeSpace(paths: readonly string[], opts: WatchOptions): Promise<void> {
   if (paths.length === 0) throw new DiskguardInputError("give at least one path to watch")
+  validate(opts)
   const interval = typeof opts.interval === "string" ? parseDuration(opts.interval) : (opts.interval ?? 60_000)
   if (!Number.isFinite(interval) || interval < 100) throw new DiskguardInputError(`watch interval must be at least 100 ms; got ${interval}`)
   const read = opts.read ?? getFreeSpace
@@ -106,6 +109,12 @@ export async function watchFreeSpace(paths: readonly string[], opts: WatchOption
     }
     await sleep(interval, signal)
   }
+}
+
+/** Fails fast on a bad threshold, before any reading. */
+function validate(t: Thresholds): void {
+  if (t.warn !== undefined) parseThreshold(t.warn)
+  if (t.critical !== undefined) parseThreshold(t.critical)
 }
 
 function sleep(ms: number, signal: AbortSignal | undefined): Promise<void> {

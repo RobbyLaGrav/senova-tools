@@ -28,8 +28,11 @@ test("levelOf grades against bytes and percent thresholds", () => {
   assert.equal(levelOf(info(0), {}), "ok")
 })
 
-test("checkSpace needs at least one path", async () => {
+test("checkSpace needs at least one path and readable thresholds", async () => {
   await assert.rejects(checkSpace([]), DiskguardInputError)
+  await assert.rejects(checkSpace(["/x"], { warn: "plenty" }, async () => info(5)), /can't read size "plenty"/)
+  const [s] = await checkSpace(["/x"], { warn: "30%", critical: "100B" }, async () => info(200))
+  assert.equal(s!.level, "warn")
 })
 
 test("watchFreeSpace reports only crossings and stops when aborted", async () => {
