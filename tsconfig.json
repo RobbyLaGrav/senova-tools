@@ -14,6 +14,9 @@
       "path": "packages/overflow"
     },
     {
+      "path": "packages/probe"
+    },
+    {
       "path": "packages/quant8"
     },
     {
