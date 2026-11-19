@@ -33,11 +33,13 @@ export interface MemoryEstimate {
 export function memoryEstimate(q: QuantModel): MemoryEstimate {
   const layers = q.layers.map((l) => ({ weights: l.weights.length, bias: 4 * l.outputs, multipliers: 4 * l.outputs, shifts: l.outputs }))
   const flashBytes = layers.reduce((s, l) => s + l.weights + l.bias + l.multipliers + l.shifts, 0)
-  return { flashBytes, ramBytes: 2 * scratchSize(q), ioBytes: q.inputSize + q.layers.at(-1)!.outputs, layers }
+  return { flashBytes, ramBytes: scratchCount(q) * scratchSize(q), ioBytes: q.inputSize + q.layers.at(-1)!.outputs, layers }
 }
 
 /** Width of each scratch buffer: the widest layer output that is not the final output (0 for one layer). */
 const scratchSize = (q: QuantModel): number => q.layers.slice(0, -1).reduce((m, l) => Math.max(m, l.outputs), 0)
+/** Scratch buffers used: none for one layer, one for two layers, two (ping-pong) for more. */
+const scratchCount = (q: QuantModel): number => Math.min(2, q.layers.length - 1)
 
 const NAME_RE = /^[a-z_][a-z0-9_]{0,40}$/
 
@@ -145,7 +147,6 @@ ${cArray(l.shifts)}
     ? `
     {
         float m = output[0], s = 0.0f;
-        int i;
         for (i = 1; i < ${N}_OUTPUT_SIZE; i++) if (output[i] > m) m = output[i];
         for (i = 0; i < ${N}_OUTPUT_SIZE; i++) { output[i] = expf(output[i] - m); s += output[i]; }
         for (i = 0; i < ${N}_OUTPUT_SIZE; i++) output[i] /= s;
@@ -156,7 +157,7 @@ ${cArray(l.shifts)}
 #include "${name}.h"
 
 ${layerData}
-${scratch > 0 ? `static int8_t ${name}_buf0[${scratch}];\nstatic int8_t ${name}_buf1[${scratch}];\n` : ""}
+${Array.from({ length: scratchCount(q) }, (_, i) => `static int8_t ${name}_buf${i}[${scratch}];\n`).join("")}
 /* round(a * b / 2^31), exact ties up; saturates the single overflow case. */
 static int32_t ${name}_srdhm(int32_t a, int32_t b)
 {
