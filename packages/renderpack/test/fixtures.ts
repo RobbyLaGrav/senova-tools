@@ -155,17 +155,12 @@ export function drawRender(spec: RenderSpec): RgbaImage {
   const hole = spec.hole ?? 0.35
   for (let y = 0; y < spec.height; y++) {
     for (let x = 0; x < spec.width; x++) {
-      // 4x4 supersampling for anti-aliased edges.
-      let cover = 0
-      for (let sy = 0; sy < 4; sy++) for (let sx = 0; sx < 4; sx++) {
-        const u = (x + (sx + 0.5) / 4 - spec.cx) / spec.rx
-        const v = (y + (sy + 0.5) / 4 - spec.cy) / spec.ry
-        const d = Math.hypot(u, v)
-        if (d <= 1 && d >= hole) cover++
-      }
-      if (cover === 0) continue
+      // Anti-aliased from the distance to the outline (in pixels of the shorter radius).
+      const d = Math.hypot((x + 0.5 - spec.cx) / spec.rx, (y + 0.5 - spec.cy) / spec.ry)
+      const r = Math.min(spec.rx, spec.ry)
+      const k = Math.min(1, Math.max(0, (1 - d) * r + 0.5), hole > 0 ? Math.max(0, Math.min(1, (d - hole) * r + 0.5)) : 1)
+      if (k === 0) continue
       const shade = 0.75 + 0.5 * (((spec.cx - x) / spec.rx + (spec.cy - y) / spec.ry) * 0.25)
-      const k = cover / 16
       const i = (y * spec.width + x) * 4
       const ch = (c: number, b: number) => Math.round(Math.min(255, Math.max(0, c * shade)) * k + b * (1 - k))
       if (bg.a === 0) {
