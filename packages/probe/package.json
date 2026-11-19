@@ -1,12 +1,36 @@
 {
   "name": "@senova/probe",
   "version": "0.0.0",
-  "description": "One sentence: what it does.",
+  "description": "Bench instruments that stream live, typed measurements to a page, a script or an agent: SCPI over TCP, guarded DMM and power-supply drivers, SSE and JSONL.",
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "private": true,
-  "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
-  "files": ["dist", "README.md", "CHANGELOG.md"],
-  "repository": { "type": "git", "url": "https://github.com/RobbyLaGrav/senova-tools.git", "directory": "packages/probe" },
-  "engines": { "node": ">=24" }
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "keywords": [
+    "scpi",
+    "instruments",
+    "test-and-measurement",
+    "multimeter",
+    "power-supply",
+    "sse",
+    "lab"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RobbyLaGrav/senova-tools.git",
+    "directory": "packages/probe"
+  },
+  "engines": {
+    "node": ">=24"
+  }
 }
