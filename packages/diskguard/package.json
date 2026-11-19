@@ -1,0 +1,14 @@
+{
+  "name": "@senova/diskguard",
+  "version": "0.0.0",
+  "description": "Watch dev-machine disk space and clear build caches across git worktrees, dry run by default.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "private": true,
+  "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
+  "bin": { "diskguard": "./dist/bin.js" },
+  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "keywords": ["disk", "free-space", "cache", "worktree", "git", "cleanup", "developer-tools"],
+  "repository": { "type": "git", "url": "https://github.com/RobbyLaGrav/senova-tools.git", "directory": "packages/diskguard" },
+  "engines": { "node": ">=24" }
+}
