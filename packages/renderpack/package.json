@@ -1,12 +1,36 @@
 {
   "name": "@senova/renderpack",
   "version": "0.0.0",
-  "description": "One sentence: what it does.",
+  "description": "CAD renders to web images: trim, pad, flatten and resize PNGs to a srcset, with a manifest and a contact sheet that flags problems before publishing.",
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "private": true,
-  "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "renderpack": "./dist/bin.js"
+  },
   "files": ["dist", "README.md", "CHANGELOG.md"],
-  "repository": { "type": "git", "url": "https://github.com/RobbyLaGrav/senova-tools.git", "directory": "packages/renderpack" },
-  "engines": { "node": ">=24" }
+  "keywords": [
+    "png",
+    "images",
+    "srcset",
+    "renders",
+    "cad",
+    "contact-sheet",
+    "resize",
+    "perceptual-hash"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RobbyLaGrav/senova-tools.git",
+    "directory": "packages/renderpack"
+  },
+  "engines": {
+    "node": ">=24"
+  }
 }
