@@ -11,11 +11,11 @@ Open-source developer tools from [Senova Systems](https://senovasys.com), built 
 | [Typeset](packages/typeset) | Equation cards rendered at build time: the equation, its symbols, the meaning; never a scrollbar | Technical writers, docs sites | Ready |
 | [Honest](packages/honest) | Research pages where the results file writes the charts and the wording, with hype and claim checks | Labs and companies publishing results | Ready |
 | [Spikesim](packages/spikesim) | Browser simulation of an event camera feeding leaky integrate-and-fire neurons | Neuromorphic teaching and demos | Ready |
-| [Quant8](packages/quant8) | Quantise a small network to 8-bit and generate C to run it on a microcontroller | Embedded ML | In progress |
-| [Overflow](packages/overflow) | Audit pages for inner scrollbars, misaligned list columns and titles that wrap | Front-end teams | In progress |
-| [Renderpack](packages/renderpack) | CAD renders to web images, with a contact sheet to check before publishing | Hardware companies | In progress |
-| [Diskguard](packages/diskguard) | Watch dev-machine disk space and safely clear build caches across worktrees | Anyone running many branches | In progress |
-| [Probe](packages/probe) | Bench instruments that stream live, typed measurements to a page, a script or an agent | Hardware engineers, test labs | In progress |
+| [Quant8](packages/quant8) | Quantise a small network to 8-bit and generate C to run it on a microcontroller | Embedded ML | Ready |
+| [Overflow](packages/overflow) | Audit pages for inner scrollbars, misaligned list columns and titles that wrap | Front-end teams | Ready |
+| [Renderpack](packages/renderpack) | CAD renders to web images, with a contact sheet to check before publishing | Hardware companies | Ready |
+| [Diskguard](packages/diskguard) | Watch dev-machine disk space and safely clear build caches across worktrees | Anyone running many branches | Ready |
+| [Probe](packages/probe) | Bench instruments that stream live, typed measurements to a page, a script or an agent | Hardware engineers, test labs | Ready |
 | [Bench](packages/bench) | Hardware-in-the-loop CI: real board tests on every commit, plots in the pull request | Embedded and IoT teams | In progress |
 | [Unfold](packages/unfold) | CAD assembly to an interactive 3D product page with exploded views | Companies selling physical products | In progress |
 | [Rewind](packages/rewind) | Record an AI request with everything it touched, then replay it exactly | Teams shipping AI features | In progress |

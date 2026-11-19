@@ -1,0 +1,14 @@
+{
+  "name": "@senova/overflow",
+  "version": "0.0.0",
+  "description": "Audit pages for inner scrollbars, sideways page scroll, misaligned list columns, titles that wrap and clipped text, from a layout snapshot.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "private": true,
+  "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
+  "bin": { "overflow": "./dist/bin.js" },
+  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "keywords": ["layout", "css", "overflow", "scrollbar", "audit", "responsive", "lint"],
+  "repository": { "type": "git", "url": "https://github.com/RobbyLaGrav/senova-tools.git", "directory": "packages/overflow" },
+  "engines": { "node": ">=24" }
+}

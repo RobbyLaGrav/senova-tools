@@ -5,7 +5,22 @@
       "path": "packages/_template"
     },
     {
+      "path": "packages/diskguard"
+    },
+    {
       "path": "packages/honest"
+    },
+    {
+      "path": "packages/overflow"
+    },
+    {
+      "path": "packages/probe"
+    },
+    {
+      "path": "packages/quant8"
+    },
+    {
+      "path": "packages/renderpack"
     },
     {
       "path": "packages/seedrun"
