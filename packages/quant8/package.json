@@ -1,0 +1,14 @@
+{
+  "name": "@senova/quant8",
+  "version": "0.0.0",
+  "description": "Quantise a small feed-forward network to 8-bit integers and generate C99 that runs it on a microcontroller, bit-exact with a TypeScript reference.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "private": true,
+  "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
+  "bin": { "quant8": "./dist/bin.js" },
+  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "keywords": ["quantization", "int8", "tinyml", "embedded", "microcontroller", "neural-network", "codegen", "c99"],
+  "repository": { "type": "git", "url": "https://github.com/RobbyLaGrav/senova-tools.git", "directory": "packages/quant8" },
+  "engines": { "node": ">=24" }
+}
