@@ -379,7 +379,8 @@ export class ScpiClient extends EventEmitter {
   }
 
   #pump(): void {
-    if (this.#inFlight || this.#state !== "connected" || !this.#socket) return
+    // A socket destroyed to resynchronise (timeout, overlong reply) is dead even before its "close" event fires.
+    if (this.#inFlight || this.#state !== "connected" || !this.#socket || this.#socket.destroyed) return
     const p = this.#queue.shift()
     if (!p) return
     const socket = this.#socket

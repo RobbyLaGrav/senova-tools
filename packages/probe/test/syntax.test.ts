@@ -10,9 +10,9 @@ const code = (c: string) => (err: unknown) => err instanceof ProbeError && err.c
 test("validateCommand refuses newlines, control characters, compound commands and non-ASCII", () => {
   assert.equal(validateCommand("  *IDN?  "), "*IDN?")
   assert.throws(() => validateCommand("VOLT 1\nOUTP ON"), code("INVALID_COMMAND"))
-  assert.throws(() => validateCommand("VOLT 1\r"), code("INVALID_COMMAND"))
   assert.throws(() => validateCommand("VOLT 1;OUTP ON"), code("INVALID_COMMAND"))
-  assert.throws(() => validateCommand("VOLT 1 "), code("INVALID_COMMAND"))
+  assert.throws(() => validateCommand(`VOLT${String.fromCharCode(0xa0)}1`), code("INVALID_COMMAND"))
+  assert.throws(() => validateCommand(`VOLT 1${String.fromCharCode(13)}OUTP ON`), code("INVALID_COMMAND"))
   assert.throws(() => validateCommand(""), code("INVALID_COMMAND"))
   assert.throws(() => validateCommand("X".repeat(513)), code("INVALID_COMMAND"))
   assert.throws(() => validateCommand(42), code("INVALID_COMMAND"))

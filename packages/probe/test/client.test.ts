@@ -177,6 +177,7 @@ test("without reconnect, or after maxAttempts, commands fail instead of waiting"
 test("closed clients, misused query/write, bad commands and a full queue are refused", async () => {
   const sim = await startSimulator({ replyDelayMs: 50 })
   const client = new ScpiClient({ port: sim.port, maxQueue: 2 })
+  await client.connect()
   await assert.rejects(client.query("*IDN"), code("INVALID_COMMAND"))
   await assert.rejects(client.write("*IDN?"), code("INVALID_COMMAND"))
   await assert.rejects(client.write("VOLT 1\nOUTP ON"), code("INVALID_COMMAND"))
@@ -199,10 +200,10 @@ test("close() fails queued commands with CLOSED", async () => {
   const client = new ScpiClient({ port: sim.port })
   const a = client.query("*IDN?")
   const b = client.query("*IDN?")
+  const checks = [assert.rejects(a, code("CLOSED")), assert.rejects(b, code("CLOSED"))]
   await new Promise((r) => setTimeout(r, 50))
   await client.close()
-  await assert.rejects(a, code("CLOSED"))
-  await assert.rejects(b, code("CLOSED"))
+  await Promise.all(checks)
   await sim.close()
 })
 
