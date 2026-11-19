@@ -14,6 +14,9 @@
       "path": "packages/quant8"
     },
     {
+      "path": "packages/renderpack"
+    },
+    {
       "path": "packages/seedrun"
     },
     {
