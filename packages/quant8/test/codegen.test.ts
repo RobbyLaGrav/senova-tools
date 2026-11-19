@@ -60,6 +60,14 @@ test("one-layer model: no scratch buffers, writes straight to output, no softmax
   assert.equal(memoryEstimate(q1).ramBytes, 0)
 })
 
+test("two-layer model: one scratch buffer, none unused (unused statics fail -Werror)", () => {
+  const q2 = quantize(parseModel(randomModelJson([3, 5, 2], 25)), randomInputs(10, 3, 26))
+  const { source } = generateC(q2)
+  assert.match(source, /static int8_t model_buf0\[5\];/)
+  assert.doesNotMatch(source, /model_buf1/)
+  assert.equal(memoryEstimate(q2).ramBytes, 5)
+})
+
 test("memory estimate counts const data and scratch", () => {
   const m = memoryEstimate(q3)
   assert.equal(m.flashBytes, 6 * 10 + 10 * 7 + 7 * 4 + 9 * (10 + 7 + 4))
