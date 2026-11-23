@@ -5,6 +5,9 @@
       "path": "packages/_template"
     },
     {
+      "path": "packages/bench"
+    },
+    {
       "path": "packages/diskguard"
     },
     {
