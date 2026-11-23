@@ -1,0 +1,14 @@
+{
+  "name": "@senova/bench",
+  "version": "0.0.0",
+  "description": "Hardware-in-the-loop CI: flash a real board on every commit, run tests against it, and post the measurements as a table and charts in the pull request.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "private": true,
+  "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
+  "bin": { "bench": "./dist/bin.js" },
+  "files": ["dist", "README.md", "CHANGELOG.md"],
+  "keywords": ["hardware-in-the-loop", "hil", "embedded", "firmware", "ci", "junit", "iot", "testing"],
+  "repository": { "type": "git", "url": "https://github.com/RobbyLaGrav/senova-tools.git", "directory": "packages/bench" },
+  "engines": { "node": ">=24" }
+}
